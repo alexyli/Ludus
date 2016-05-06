@@ -1,0 +1,9 @@
+
+video {
+	border: 1px solid lightgrey;
+}
+
+#uname {
+    display: none;
+    visibility: hidden;
+}

@@ -1,0 +1,308 @@
+<html>
+    <head>
+        <link rel='stylesheet' href='styles.css'>
+    </head>
+    <body>
+
+        <button id="startLocal">Start Local Session</button>
+        <button id="startCall1">invite User 1</button>
+        <button id="startCall2">invite User 2</button>
+        <button id="startCall3">invite User 3</button>
+        <button id="startCall4">invite User 4</button>
+        <button id="startCall5">invite User 5</button>
+        
+		<button id="endCall">End Call</button>	
+        
+        <video id="localVideo" muted="muted"></video>
+        <video id="Video1" ></video>
+        <video id="Video2" ></video>
+        <video id="Video3" ></video>
+        <video id="Video4" ></video>
+        <video id="Video5" ></video>
+        
+        <script src='sip-0.7.3.js'></script>
+        
+        <script>
+            var agent = 'user1';
+            var userAgent = new SIP.UA(agent + '@ludus.onsip.com');
+            
+            var session0;
+            var session1;
+            var session2;
+            var session3;
+            var session4;
+            var session5;
+            
+            var sessions = [session0, session1, session2, session3, session4, session5];
+            var usersConnected = [];    // stores all the current users
+            var numConnected = 0;   // indexing through all the users
+            
+            var startLocal = document.getElementById('startLocal');
+            var startCall1 = document.getElementById('startCall1');
+            var startCall2 = document.getElementById('startCall2');
+            var startCall3 = document.getElementById('startCall3');
+            var startCall4 = document.getElementById('startCall4');
+            var startCall5 = document.getElementById('startCall5');
+            
+            //var v1 = document.getElementById('Video1');
+            var v2 = document.getElementById('Video2');
+            var v3 = document.getElementById('Video3');
+            var v4 = document.getElementById('Video4');
+            var v5 = document.getElementById('Video5');
+            
+            var videoElement = [v2, v3, v4, v5];
+            var vNum = 0;
+            var firstConnection = true;
+            
+            
+            /*
+            var mediaConstraints = { audio: true, video: true};
+            var mediaStream;
+            */
+            
+            
+            // setting up local video
+            startLocal.addEventListener("click", function() {
+                // steam get user media
+            }, false);
+            
+            /////////////////////////////////////////////////////////////////////////////////////////
+            
+            
+            // media configuration for connecting to user 2
+            var option = {
+                media: {
+                    constraints: {
+                        audio: true,
+                        video: true
+                    },
+                    render: {
+                        local: document.getElementById('localVideo'),
+                        remote: document.getElementById('Video1')
+                        
+                    }
+                }
+            };
+            
+            function op(){
+                var o = {
+                    media: {
+                        constraints: {
+                            audio: true,
+                            video: true
+                        },
+                        render: {
+                            remote: videoElement[vNum]
+                        }
+                    }
+                };
+                return o
+            }
+            
+            function sleep(){
+                alert('calling');
+            }
+
+            /////////////////////////////////////////////////////////////////////////////////////////
+
+            // action event for button (calling user 1)
+            // assuming user 1 is not connected, add this feature when you have time
+            startCall1.addEventListener("click", function() {
+                var options = op();
+                console.log('Connect to user 1');
+                if(numConnected == 0){
+                    //session1 = userAgent.invite('user1@ludus.onsip.com', option);
+                    userAgent.message('user1@ludus.onsip.com', agent);
+                }
+                else{
+                    userAgent.message('user1@ludus.onsip.com', agent);
+                    //session1 = userAgent.invite('user1@ludus.onsip.com', options);
+                    //vNum = vNum + 1;
+                    for(i = 0; i < numConnected; i++){
+                        userAgent.message(usersConnected[i] + '@ludus.onsip.com', 'user1');
+                    }
+                }
+                //firstConnection = false;    // after first connection is set
+                usersConnected[numConnected] = "user1";
+                numConnected = numConnected + 1;
+                console.log('vNum is at' + vNum);
+            }, false);
+////////////            
+            
+            // action event for button (calling user 2)
+            // assuming user 2 is not connected, add this feature when you have time
+            startCall2.addEventListener("click", function() {
+                var options = op();
+                console.log('Connect to user 2');
+                if(numConnected == 0){
+                    //session2 = userAgent.invite('user2@ludus.onsip.com', option);
+                    userAgent.message('user2@ludus.onsip.com', agent);
+                }
+                else{
+                    userAgent.message('user2@ludus.onsip.com', agent);
+                    //session2 = userAgent.invite('user2@ludus.onsip.com', options);
+                    //vNum = vNum + 1;
+                    for(i = 0; i < numConnected; i++){
+                        userAgent.message(usersConnected[i] + '@ludus.onsip.com', 'user2');
+                    }
+                }
+                //firstConnection = false;    // after first connection is set
+                usersConnected[numConnected] = "user2";
+                numConnected = numConnected + 1;
+                console.log('vNum is at' + vNum);
+            }, false);
+ ////////////           
+            
+            // action event for button (calling user 3)
+            // assuming user 3 is not connected, add this feature when you have time
+            startCall3.addEventListener("click", function() {
+                var options = op();
+                console.log('Connect to user 3');
+                if(numConnected == 0){
+                    //session3 = userAgent.invite('user3@ludus.onsip.com', option); 
+                    userAgent.message('user3@ludus.onsip.com', agent);
+                }
+                else{
+                    userAgent.message('user3@ludus.onsip.com', agent);
+                    //session3 = userAgent.invite('user3@ludus.onsip.com', options);
+                    //vNum = vNum + 1;
+                    // used to connect the other peers
+                    setTimeout(fun, 5000);
+                    for(i = 0; i < numConnected; i++){
+                        userAgent.message(usersConnected[i] + '@ludus.onsip.com', 'user3');
+                    }
+                }
+                //firstConnection = false;    // after first connection is set
+                usersConnected[numConnected] = "user3";
+                numConnected = numConnected + 1;
+                console.log('vNum is at' + vNum);
+            }, false);
+////////////
+        
+            // action event for button (calling user 4)
+            // assuming user 4 is not connected, add this feature when you have time
+            startCall4.addEventListener("click", function() {
+                var options = op();
+                console.log('Connect to user0');
+                if(numConnected == 0){
+                    //session4 = userAgent.invite('user0@ludus.onsip.com', option); 
+                    userAgent.message('user0@ludus.onsip.com', agent);
+                }
+                else{
+                    userAgent.message('user0@ludus.onsip.com', agent);
+                    //session4 = userAgent.invite('user0@ludus.onsip.com', options);
+                    //vNum = vNum + 1;
+                    for(i = 0; i < numConnected; i++){
+                        userAgent.message(usersConnected[i] + '@ludus.onsip.com', 'user0');
+                    }
+                }
+                //firstConnection = false;    // after first connection is set
+                usersConnected[numConnected] = "user0";
+                numConnected = numConnected + 1;
+                console.log('vNum is at' + vNum);
+            }, false);
+////////////            
+            
+            // action event for button (calling user 5)
+            // assuming user 5 is not connected, add this feature when you have time
+            startCall5.addEventListener("click", function() {
+                var options = op();
+                console.log('Connect to mat2');
+                if(numConnected == 0){
+                    //session5 = userAgent.invite('mat2@ludus.onsip.com', option); 
+                    userAgent.message('mat2@ludus.onsip.com', agent);
+                }
+                else{
+                    userAgent.message('mat2@ludus.onsip.com', agent);
+                    //session5 = userAgent.invite('mat2@ludus.onsip.com', options);
+                    //vNum = vNum + 1;
+                    for(i = 0; i < numConnected; i++){
+                        userAgent.message(usersConnected[i] + '@ludus.onsip.com', 'mat2');
+                    }
+                }
+                //firstConnection = false;    // after first connection is set
+                // adding the new connection to the list of connected users
+                usersConnected[numConnected] = "mat2";
+                numConnected = numConnected + 1;
+                console.log('vNum is at' + vNum);
+            }, false);
+            
+            
+            /////////////////////////////////////////////////////////////////////////////////////////
+            // accepting the SIP connection from host user and
+            // media configuration for connecting to host user
+            userAgent.on('invite', function(session) {
+                if(firstConnection == true){
+                    session.accept({
+                        media: {
+                            constraints: {
+                                audio: true,
+                                video: true
+                            },
+                            render: {
+                                local: document.getElementById('localVideo'),
+                                remote: document.getElementById('Video1')
+                            }
+                        }
+                    });
+                }
+                
+                else{
+                    session.accept({
+                        media: {
+                            constraints: {
+                                audio: true,
+                                video: true
+                            },
+                            render: {
+                                remote: videoElement[vNum]
+                            }
+                        }
+                    });
+                    vNum = vNum + 1;
+                }
+                firstConnection = false;
+            });
+            /////////////////////////////////////////////////////////////////////////////////////////
+            
+            
+            // connect the other people together
+            userAgent.on('message', function(msg){
+                //window.setTimeout(sleep, 5000);
+                var options = op();
+                user = msg.body + '@ludus.onsip.com';
+                console.log(msg.body);
+                console.log(user);
+                usersConnected[numConnected] = msg.body;
+                numConnected = numConnected + 1;
+                if(firstConnection == true){
+                    session0 = userAgent.invite(user, option);
+                    firstConnection = false;
+                }
+                else{
+                    sessions[vNum] = userAgent.invite(user, options);
+                    vNum = vNum + 1;
+                }
+            });
+            
+            
+            /*
+            // accept join request
+            userAgent.on('invite', function(session) {
+                session.accept();
+            });
+            */
+            
+            
+            // ending the call completely 
+            var endButton = document.getElementById('endCall');
+            endButton.addEventListener("click", function() {
+                session = null;
+                session2 = null;
+                session3 = null;
+            });
+            
+            
+        </script>
+    </body>
+</html>
