@@ -1,5 +1,9 @@
-How To Run
+4th Year University Project
+Video chat using WebRTC
 
+______
+
+How To Run
 
 Must follow in this order for now:
 
@@ -11,5 +15,4 @@ Must follow in this order for now:
 - Go on user 1 and accept the call.
 - Go on user 2 and accept that call.
 
-- Easy. 3 way connection done. Will be tweeking it a lot but
-  at least it's done.
+author: Alex Li (alexyli)
